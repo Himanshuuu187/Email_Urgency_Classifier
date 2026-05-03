@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+venv/
+.env
+credentials.json
+token.json
+model.pkl
+vectorizer.pkl
+credintals.json

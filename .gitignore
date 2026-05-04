@@ -7,3 +7,4 @@ token.json
 model.pkl
 vectorizer.pkl
 credintals.json
+.streamlit/secrets.toml

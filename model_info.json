@@ -1,0 +1,10 @@
+{
+  "classes": [
+    "high",
+    "low",
+    "medium"
+  ],
+  "trained_at": "2026-05-04T21:53:48.246489",
+  "num_samples": 95,
+  "features": 5000
+}

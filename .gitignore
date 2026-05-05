@@ -3,4 +3,5 @@ __pycache__/
 venv/
 .env
 token.json
+credentials.json
 .streamlit/secrets.toml

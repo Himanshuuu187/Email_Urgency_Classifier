@@ -4,7 +4,6 @@ venv/
 .env
 credentials.json
 token.json
-model.pkl
-vectorizer.pkl
+
 credintals.json
 .streamlit/secrets.toml

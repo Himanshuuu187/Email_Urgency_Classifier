@@ -4,7 +4,16 @@
     "low",
     "medium"
   ],
-  "trained_at": "2026-05-04T21:53:48.246489",
+  "trained_at": "2026-05-05T11:06:21.869456",
   "num_samples": 95,
-  "features": 5000
+  "features": 5000,
+  "ngram_range": [
+    1,
+    2
+  ],
+  "avg_polarity_by_label": {
+    "high": 0.013,
+    "low": 0.139,
+    "medium": 0.041
+  }
 }

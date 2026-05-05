@@ -49,7 +49,7 @@ def extract_body(email_msg) -> str:
     body = ""
     if email_msg.is_multipart():
         for part in email_msg.walk():
-            content_type = part.get_content_type()
+            content_type        = part.get_content_type()
             content_disposition = str(part.get("Content-Disposition", ""))
             if content_type == "text/plain" and "attachment" not in content_disposition:
                 try:
@@ -72,17 +72,17 @@ def parse_sender(raw_from: str) -> dict:
 
     match = re.match(r'^(.*?)\s*<(.+?)>$', raw_from.strip())
     if match:
-        name = match.group(1).strip().strip('"')
+        name  = match.group(1).strip().strip('"')
         email = match.group(2).strip()
     else:
-        name = raw_from.strip()
+        name  = raw_from.strip()
         email = raw_from.strip()
 
     return {"name": name or email, "email": email}
 
 
 def parse_date(raw_date: str) -> str:
-    """Parse email date header into ISO format string."""
+    """Parse email date header into YYYY-MM-DD string."""
     if not raw_date:
         return None
     try:
@@ -92,16 +92,17 @@ def parse_date(raw_date: str) -> str:
         return None
 
 
-def get_emails(max_results: int = 50, query: str = "is:unread") -> list[dict]:
+def get_emails(max_results: int = 50, query: str = "is:unread") -> list:
     """
     Fetch emails from Gmail.
 
     Args:
         max_results: Max number of emails to fetch (default 50).
-        query: Gmail search query (default: unread emails).
+        query:       Gmail search query (default: unread emails).
 
     Returns:
-        List of dicts with keys: subject, body, sender_name, sender_email, date, snippet.
+        List of dicts with keys:
+        subject, body, snippet, sender_name, sender_email, date, message_id.
     """
     service = authenticate_gmail()
 
@@ -115,7 +116,7 @@ def get_emails(max_results: int = 50, query: str = "is:unread") -> list[dict]:
         raise RuntimeError(f"Failed to list emails: {e}")
 
     messages = results.get('messages', [])
-    emails = []
+    emails   = []
 
     for msg in messages:
         try:
@@ -125,24 +126,23 @@ def get_emails(max_results: int = 50, query: str = "is:unread") -> list[dict]:
                 format='raw'
             ).execute()
 
-            raw_data = base64.urlsafe_b64decode(msg_data['raw'])
+            raw_data  = base64.urlsafe_b64decode(msg_data['raw'])
             email_msg = message_from_bytes(raw_data)
 
-            subject = clean_text(email_msg.get('subject', '(No Subject)'))
-            body = extract_body(email_msg)
-            snippet = body[:200] + "..." if len(body) > 200 else body
-
+            subject     = clean_text(email_msg.get('subject', '(No Subject)'))
+            body        = extract_body(email_msg)
+            snippet     = body[:200] + "..." if len(body) > 200 else body
             sender_info = parse_sender(email_msg.get('from', ''))
-            date_str = parse_date(email_msg.get('date', ''))
+            date_str    = parse_date(email_msg.get('date', ''))
 
             emails.append({
-                "subject": subject,
-                "body": body,
-                "snippet": snippet,
-                "sender_name": sender_info["name"],
+                "subject":      subject,
+                "body":         body,
+                "snippet":      snippet,
+                "sender_name":  sender_info["name"],
                 "sender_email": sender_info["email"],
-                "date": date_str,
-                "message_id": msg['id']
+                "date":         date_str,
+                "message_id":   msg['id']
             })
 
         except Exception as e:

@@ -4,6 +4,4 @@ venv/
 .env
 credentials.json
 token.json
-
-credintals.json
 .streamlit/secrets.toml
